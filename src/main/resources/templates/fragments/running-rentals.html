@@ -1,0 +1,47 @@
+<div layout:decorate="~{index}" layout:fragment="content">
+    <h1 class="mt-4">Running rentals</h1>
+    <p class="lead">List of currently rented cars</p>
+    <hr>
+
+    <div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${!error.isBlank()}">
+        <span th:text="${error}"></span>
+        <button aria-label="Close" class="close" data-dismiss="alert" type="button">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="alert alert-success alert-dismissible fade show" role="alert" th:if="${!success.isBlank()}">
+        <span th:text="${success}"></span>
+        <button aria-label="Close" class="close" data-dismiss="alert" type="button">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div th:switch="${rentalsListSize}" th:with="rentalsListSize=${#lists.size(rentals)}">
+        <p class="text-center info" th:case="0">0 rentals found.<br>Currently no customer has rented a car</p>
+        <table class="table table-borderless table-hover table-sm" style="width: 100%;" th:case="*">
+            <caption class="text-center" style="font-size: 12px;"
+                     th:text="${rentalsListSize + (rentalsListSize == 1 ? ' rental' : ' rentals') + ' found'}"></caption>
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Rental date</th>
+                <th>Rental station</th>
+                <th>Driver</th>
+                <th>Car</th>
+                <th>Finish</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="rental : ${rentals}">
+                <td th:text="${rental.id}">Id</td>
+                <td th:text="${rental.rentalDate}">Rental date</td>
+                <td th:text="${rental.rentalStation.city}">Rental station</td>
+                <td th:text="${rental.driver}"></td>
+                <td th:text="${rental.car}">Car</td>
+                <td><a class="btn btn-warning btn-sm" th:href="@{'finish-rental/' + ${rental.id}}">Finish</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

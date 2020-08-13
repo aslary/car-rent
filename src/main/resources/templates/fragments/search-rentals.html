@@ -1,0 +1,56 @@
+<div layout:decorate="~{index}" layout:fragment="content">
+    <h1 class="mt-4">Explore</h1>
+    <p class="lead">Search for cars in your region</p>
+    <hr>
+
+    <form action="/" method="post" th:object="${selectedStationBean}">
+        <div class="form-group row">
+            <label class="col-sm-2" for="station">Select your city</label>
+            <div class="col-sm-10">
+                <select class="form-control form-control-sm" id="station" th:field="*{station}">
+                    <option th:each="station : ${stations}"
+                            th:text="${station.city}"
+                            th:value="${station.id}">
+                    </option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <span class="col-sm-2"></span>
+            <div class="col-sm-10">
+                <input class="btn btn-primary" type="submit" value="Search">
+            </div>
+        </div>
+    </form>
+
+    <div th:if="${cars != null}">
+        <hr>
+        <div th:switch="${carsListSize}" th:with="carsListSize=${#lists.size(cars)}">
+            <p class="text-center info" th:case="0">0 cars found.<br>There are no cars at this station.</p>
+            <div th:case="*">
+                <table class="table table-borderless table-hover table-sm">
+                    <caption class="text-center info"
+                             th:text="${carsListSize + (carsListSize == 1 ? ' car' : ' cars') + ' found'}"></caption>
+                    <thead>
+                    <tr>
+                        <th>Registration Number</th>
+                        <th>Construction Year</th>
+                        <th>Mileage (km)</th>
+                        <th>Model</th>
+                        <th>Station</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="car : ${cars}">
+                        <td th:text="${car.registrationNr}"></td>
+                        <td th:text="${car.constructionYear}"></td>
+                        <td th:text="${#numbers.formatDecimal(car.mileage, 0, 'POINT', 0, 'POINT')}"></td>
+                        <td th:text="${car.model}"></td>
+                        <td th:text="${car.station?.city}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

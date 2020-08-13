@@ -1,0 +1,87 @@
+<div layout:decorate="~{index}" layout:fragment="content">
+    <h1 class="mt-4">Finish rental</h1>
+    <p class="lead">To finish this rental, provide below pieces of information</p>
+    <hr>
+
+    <form method="post" th:action="@{'/employee/finish-rental/' + ${finishRentalBean.id}}"
+          th:object="${finishRentalBean}">
+
+        <div class="form-group row">
+            <label class="col-sm-2" for="id">Id</label>
+            <div class="col-sm-10">
+                <input class="form-control form-control-sm" disabled id="id" th:value="*{id}">
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2" for="customer">Customer</label>
+            <div class="col-sm-10">
+                <input class="form-control form-control-sm" disabled id="customer" th:value="*{driver}">
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2" for="car">Car</label>
+            <div class="col-sm-10">
+                <input class="form-control form-control-sm" disabled id="car" th:value="*{car}">
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2" for="rentalStation">Rental station</label>
+            <div class="col-sm-10">
+                <input class="form-control form-control-sm" disabled id="rentalStation"
+                       th:value="*{rentalStation.city}">
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2" for="rentalDate">Rental date</label>
+            <div class="col-sm-10">
+                <input class="form-control form-control-sm" disabled id="rentalDate" th:value="*{rentalDate}">
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2" for="returnDate">Return date</label>
+            <div class="col-sm-10">
+                <input class="form-control form-control-sm" id="returnDate" th:field="*{returnDate}"
+                       type="date">
+                <small class="form-text text-danger" th:errors="*{returnDate}"
+                       th:if="${#fields.hasErrors('returnDate')}"></small>
+                <small class="text-danger" th:text="${returnDateError}"></small>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2" for="returnStation">Return station</label>
+            <div class="col-sm-10">
+                <select class="form-control form-control-sm" id="returnStation" th:field="*{returnStation}">
+                    <option th:each="station : ${stations}" th:text="${station.city}"
+                            th:value="${station.id}"></option>
+                </select>
+                <small class="text-danger" th:errors="*{returnStation}"
+                       th:if="${#fields.hasErrors('returnStation')}"></small>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2" for="km">Driven distance (km)</label>
+            <div class="col-sm-10">
+                <input class="form-control form-control-sm" id="km" th:field="*{km}">
+                <small class="text-danger" th:errors="*{km}"
+                       th:if="${#fields.hasErrors('km')}"></small>
+            </div>
+
+        </div>
+
+        <hr>
+        <div class="form-group row">
+            <label class="col-sm-2"></label>
+            <div class="col-sm-10">
+                <input class="btn btn-success" type="submit" value="Finish">
+                <a class="btn btn-danger" href="/employee/running-rentals">Cancel</a>
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,78 @@
+<div layout:decorate="~{index}" layout:fragment="content">
+    <h1 class="mt-4">Create rental</h1>
+    <p class="lead">Issue new rentals for specific customers</p>
+    <hr>
+
+    <div th:switch="${#lists.size(stations)}">
+        <p th:case="0">There are no stations.</p>
+        <form action="/employee/create-rental/process" method="post" th:case="*" th:object="${rental}">
+
+            <div class="form-group row">
+                <label class="col-sm-2" for="rentalStation">Rental station</label>
+                <div class="col-sm-10">
+                    <select class="form-control form-control-sm" id="rentalStation"
+                            onchange="this.form.action='/employee/create-rental/refresh'; this.form.submit()"
+                            th:field="*{rentalStation}">
+                        <option th:each="station : ${stations}" th:text="${station.city}"
+                                th:value="${station.id}"></option>
+                    </select>
+                    <small class="text-danger" th:errors="*{rentalStation}"
+                           th:if="${#fields.hasErrors('rentalStation')}"></small>
+                </div>
+            </div>
+
+            <div th:switch="${#lists.size(cars)}">
+                <p class="text-center info" th:case="0">0 cars found.<br>There are no cars in this station.</p>
+                <div th:case="*">
+
+                    <div class="form-group row">
+                        <label class="col-sm-2" for="car">Car</label>
+                        <div class="col-sm-10">
+                            <select class="form-control form-control-sm" id="car" th:field="*{car}">
+                                <option th:each="car : ${cars}"
+                                        th:text="${car}"
+                                        th:value="${car.registrationNr}">
+                                </option>
+                            </select>
+                            <small class="text-danger" th:errors="*{car}"
+                                   th:if="${#fields.hasErrors('car')}"></small>
+                            <small class="text-danger" th:text="${carMismatchError}"></small>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-2" for="driver">Customer</label>
+                        <div class="col-md-10">
+                            <select class="form-control form-control-sm" id="driver" th:field="*{driver}">
+                                <option th:each="customer : ${customers}"
+                                        th:text="${customer}"
+                                        th:value="${customer.customerNumber}">
+                                </option>
+                            </select>
+                            <small class="text-danger" th:errors="*{driver}"
+                                   th:if="${#fields.hasErrors('driver')}"></small>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-2" for="rentalDate">Rental date</label>
+                        <div class="col-md-10">
+                            <input class="form-control form-control-sm" id="rentalDate" th:field="*{rentalDate}"
+                                   type="date">
+                            <small class="text-danger" th:errors="*{rentalDate}"
+                                   th:if="${#fields.hasErrors('rentalDate')}"></small>
+                        </div>
+                    </div>
+
+                    <hr>
+                    <div class="form-group row">
+                        <label class="col-sm-2"></label>
+                        <div class="col-md-10">
+                            <input class="btn btn-success" type="submit" value="Create">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
